@@ -9,10 +9,10 @@ class GHRepoListHomePage extends StatefulWidget {
 }
 
 class GHRepoListState extends State<GHRepoListHomePage> {
+  var _repolist = <Repo>[];
+  TextEditingController textEditingController = TextEditingController();
 
-var _repolist = <Repo>[];
-
-@override
+  @override
   void initState() {
     super.initState();
   }
@@ -26,7 +26,14 @@ var _repolist = <Repo>[];
         body: Center(
           child: Column(
             children: <Widget>[
-              Padding(padding: const EdgeInsets.all(16.0), child: TextField()),
+              Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                      controller: textEditingController,
+                      decoration: InputDecoration(
+                        hintText: 'Please enter github user name',
+                        hintStyle: TextStyle(color: Colors.grey),
+                      ))),
               RaisedButton(
                 child: Text("Okay"),
                 color: Colors.indigo,
@@ -48,13 +55,14 @@ var _repolist = <Repo>[];
         ));
   }
 
-  _loadData() async {
-    String url = "https://api.github.com/users/smalam119/repos";
+  _loadData(String username) async {
+    String url = "https://api.github.com/users/${username}/repos";
     http.Response response = await http.get(url);
     setState(() {
       final repoListJSON = json.decode(response.body);
-      for(var repoJSON in repoListJSON) {
-        final repo = Repo(repoJSON["id"],repoJSON["name"],repoJSON["description"]);
+      for (var repoJSON in repoListJSON) {
+        final repo =
+            Repo(repoJSON["id"], repoJSON["name"], repoJSON["description"]);
         _repolist.add(repo);
         print("name: ${repo.name}");
       }
@@ -62,7 +70,7 @@ var _repolist = <Repo>[];
   }
 
   _onPressOkayButton() {
-    print("Okay button pressed");
-    _loadData();
+    final username = textEditingController.text;
+    _loadData(username);
   }
 }
