@@ -12,9 +12,5 @@ class Repo {
       throw ArgumentError("name of Repo cannot be null. "
           "Received: '$name'");
     }
-    if (description == null) {
-      throw ArgumentError("description of Repo cannot be null. "
-          "Received: '$description'");
-    }
   }
 }
