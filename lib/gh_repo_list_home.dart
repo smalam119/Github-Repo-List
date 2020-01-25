@@ -4,13 +4,14 @@ import 'package:gh_repo_list/repo.dart';
 import 'strings.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'repo_list_view.dart';
 
 class GHRepoListHomePage extends StatefulWidget {
   createState() => GHRepoListState();
 }
 
 class GHRepoListState extends State<GHRepoListHomePage> {
-  var _repolist = <Repo>[];
+  var _repoList = <Repo>[];
   TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -44,12 +45,7 @@ class GHRepoListState extends State<GHRepoListHomePage> {
                 onPressed: _onPressOkayButton,
               ),
               Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    ListTile(title: Text('Android App')),
-                    ListTile(title: Text('iOS App'))
-                  ],
-                ),
+                child: RepoListView(_repoList),
               )
             ],
           ),
@@ -74,18 +70,26 @@ class GHRepoListState extends State<GHRepoListHomePage> {
             gravity: ToastGravity.CENTER);
             return;
       }
+      _repoList.clear();
       final repoListJSON = json.decode(response.body);
       for (var repoJSON in repoListJSON) {
         final repo =
             Repo(repoJSON["id"], repoJSON["name"], repoJSON["description"]);
-        _repolist.add(repo);
-        print("name: ${repo.name}");
+        _repoList.add(repo);
       }
     });
   }
 
   _onPressOkayButton() {
     final username = textEditingController.text;
-    _loadData(username);
-  }
+    if (username.isEmpty) {
+      Fluttertoast.showToast(
+            msg: "enter user name and try again",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER);
+            return;
+      } else {
+        _loadData(username);
+      }
+    }
 }
