@@ -22,7 +22,7 @@ class RepoListViewState extends State<RepoListView> {
       itemBuilder: (BuildContext context, int position) {
         if (position.isOdd) return Divider();
         final index = position ~/ 2;
-        return _buildRow(index);
+        return _buildRow2(index);
       },
     );
   }
@@ -32,6 +32,44 @@ class RepoListViewState extends State<RepoListView> {
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
         title: Text("${_repoList[i].name}"),
+      ),
+    );
+  }
+
+  Widget _buildRow2(int i) {
+    final infoList = Container(
+      padding: EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            children: [
+              Text("Language"),
+              Text("${_repoList[i].language}")
+            ]
+          ),
+          Column(
+            children: [
+              Text("Stars"),
+              Text("${_repoList[i].stargazersCount}")
+            ]
+          ),
+          Column(
+            children: [
+              Text("Forks"),
+              Text("${_repoList[i].forksCount}")
+            ],
+          )
+        ],
+      ),
+    );
+    final repoTitle = Text("${_repoList[i].name}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15), textAlign: TextAlign.center,);
+    return Container(
+      child: Column(
+        children: [
+          repoTitle,
+          infoList
+        ]
       ),
     );
   }

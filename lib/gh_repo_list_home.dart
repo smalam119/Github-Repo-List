@@ -74,7 +74,7 @@ class GHRepoListState extends State<GHRepoListHomePage> {
       final repoListJSON = json.decode(response.body);
       for (var repoJSON in repoListJSON) {
         final repo =
-            Repo(repoJSON["id"], repoJSON["name"], repoJSON["description"]);
+            Repo(repoJSON["id"], repoJSON["name"], repoJSON["description"], repoJSON["language"], repoJSON["stargazers_count"], repoJSON["forks_count"]);
         _repoList.add(repo);
       }
     });
