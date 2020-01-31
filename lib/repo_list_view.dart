@@ -22,21 +22,12 @@ class RepoListViewState extends State<RepoListView> {
       itemBuilder: (BuildContext context, int position) {
         if (position.isOdd) return Divider();
         final index = position ~/ 2;
-        return _buildRow2(index);
+        return _buildRow(index);
       },
     );
   }
 
   Widget _buildRow(int i) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListTile(
-        title: Text("${_repoList[i].name}"),
-      ),
-    );
-  }
-
-  Widget _buildRow2(int i) {
     final infoList = Container(
       padding: EdgeInsets.all(8.0),
       child: Row(
